@@ -20,13 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $password_sicura = password_hash($password_chiara, PASSWORD_DEFAULT);
 
-    $sql_check = "SELECT userId FROM Utenti WHERE email = '$email'";
+    $sql_check = "SELECT userId FROM UTENTI WHERE email = '$email'";
     $risultato_check = mysqli_query($conn, $sql_check);
 
     if (mysqli_num_rows($risultato_check) > 0) {
         $errore = "Email già usata, provane un'altra!";
     } else {
-        $sql_insert = "INSERT INTO Utenti (nome, email, passwordH, ruolo, sospensione) VALUES ('$nome', '$email', '$password_sicura', '$ruolo', NULL)";
+        $sql_insert = "INSERT INTO UTENTI (nome, email, passwordH, ruolo, sospensione) VALUES ('$nome', '$email', '$password_sicura', '$ruolo', NULL)";
         if (mysqli_query($conn, $sql_insert)) {
             $successo = "Registrazione fatta! Ora puoi andare al login.";
         } else {

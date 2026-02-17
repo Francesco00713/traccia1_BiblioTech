@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+date_default_timezone_set('Europe/Rome');
 $host = "db"; 
 $user = "myuser";
 $pass = "mypassword";
@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password_inserita = $_POST['password'];
 
-    $sql = "SELECT * FROM Utenti WHERE email = '$email'";
+    $sql = "SELECT * FROM UTENTI WHERE email = '$email'";
     $risultato = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($risultato) > 0) {
@@ -26,7 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (password_verify($password_inserita, $utente['passwordH'])) {
             $otp = rand(100000, 999999); 
-            
             $oggetto = "Codice OTP BiblioTech";
             $messaggio = "Ciao " . $utente['nome'] . ", il tuo codice è: " . $otp;
             $headers = "From: noreply@bibliotech.it";

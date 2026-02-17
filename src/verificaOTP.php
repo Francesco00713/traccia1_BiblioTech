@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+date_default_timezone_set('Europe/Rome');
 if (!isset($_SESSION['temp_login'])) {
     header("Location: login.php");
     exit();
@@ -14,7 +14,6 @@ $errore = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $otp_inserito = $_POST['otp'];
     $dati = $_SESSION['temp_login'];
-
     if ($otp_inserito == $dati['otp'] && date("Y-m-d H:i:s") <= $dati['scadenza_otp']) {
         
         $userId = $dati['userId'];
@@ -22,18 +21,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $scadenza = date("Y-m-d H:i:s", strtotime("+1 hour"));
         $otp = $dati['otp'];
         $scadenzaOTP = $dati['scadenza_otp'];
-
-        $sql = "INSERT INTO Sessioni (userId, inizio, scadenza, OTP, scadenzaOTP) 
-                VALUES ('$userId', '$inizio', '$scadenza', '$otp', '$scadenzaOTP')";
-        
+        $sql = "INSERT INTO SESSIONI (userId, inizio, scadenza, OTP, scadenzaOTP) VALUES ('$userId', '$inizio', '$scadenza', '$otp', '$scadenzaOTP')";
         if (mysqli_query($conn, $sql)) {
+            $_SESSION['sessionId'] = mysqli_insert_id($conn);
+            
             $_SESSION['userId'] = $userId;
             $_SESSION['nome'] = $dati['nome'];
             $_SESSION['ruolo'] = $dati['ruolo']; 
             $_SESSION['email'] = $dati['email'];
             $_SESSION['otp_verificato'] = true;
+            
             unset($_SESSION['temp_login']);
-            header("Location: dashboard.php");
+
+            if ($_SESSION['ruolo'] === 'BIBLIOTECARIO') {
+                header("Location: dashboard_bibliotecario.php");
+            } else {
+                header("Location: dashboard_studente.php");
+            }
             exit();
         }
     } else {
