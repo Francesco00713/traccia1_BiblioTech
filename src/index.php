@@ -17,7 +17,7 @@
         <h1 class="title schoolbell-regular">BiblioTech</h1>
         <div class="section">
             <p class="istruzioni fira-sans-regular">Accedi per poter usufruire dei servizi della biblioteca digitale</p>
-            <a href="src/login.php" class="btn-custom">ACCEDI</a>
+            <a href="login.php" class="btn-custom">ACCEDI</a>
         </div>
         <hr>
         <div class="section">

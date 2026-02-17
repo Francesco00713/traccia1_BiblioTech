@@ -8,8 +8,8 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./src:/var/www/html
-      - ./conf/php.ini:/usr/local/etc/php/php.ini
+    - ./src:/var/www/html
+    - ./php.ini:/usr/local/etc/php/php.ini
     depends_on:
       - db
       - mailpit
