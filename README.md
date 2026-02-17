@@ -22,3 +22,8 @@ BiblioTech è una piattaforma web sviluppata in PHP per la gestione dei prestiti
     Accedere a PHPMyAdmin e importare il file database.sql presente nella cartella sql affinché l'intero database con le dovute tabelle venga creato e possa essere pronto all'utilizzo.
 
 5. Utilizzare la piattaforma <3
+    Password utenti:
+    1 - 123
+    2 - 1234
+    3 - 12345
+    4 - 123456
