@@ -11,26 +11,32 @@ if (!$conn) {
 
 $errore = "";
 $successo = "";
+define("CODICE_BIBLIOTECARIO", "123"); 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = mysqli_real_escape_string($conn, $_POST['nome']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password_chiara = $_POST['password'];
     $ruolo = $_POST['ruolo'];
+    $codice_inserito = $_POST['codice_bibliotecario'] ?? "";
 
-    $password_sicura = password_hash($password_chiara, PASSWORD_DEFAULT);
-
-    $sql_check = "SELECT userId FROM UTENTI WHERE email = '$email'";
-    $risultato_check = mysqli_query($conn, $sql_check);
-
-    if (mysqli_num_rows($risultato_check) > 0) {
-        $errore = "Email già usata, provane un'altra!";
+    if ($ruolo == "BIBLIOTECARIO" && $codice_inserito !== CODICE_BIBLIOTECARIO) {
+        $errore = "Codice bibliotecario errato. Autorizzazione negata.";
     } else {
-        $sql_insert = "INSERT INTO UTENTI (nome, email, passwordH, ruolo, sospensione) VALUES ('$nome', '$email', '$password_sicura', '$ruolo', NULL)";
-        if (mysqli_query($conn, $sql_insert)) {
-            $successo = "Registrazione fatta! Ora puoi andare al login.";
+        $password_sicura = password_hash($password_chiara, PASSWORD_DEFAULT);
+
+        $sql_check = "SELECT userId FROM UTENTI WHERE email = '$email'";
+        $risultato_check = mysqli_query($conn, $sql_check);
+
+        if (mysqli_num_rows($risultato_check) > 0) {
+            $errore = "Email già usata, provane un'altra!";
         } else {
-            $errore = "Errore nell'inserimento: " . mysqli_error($conn);
+            $sql_insert = "INSERT INTO UTENTI (nome, email, passwordH, ruolo, sospensione) VALUES ('$nome', '$email', '$password_sicura', '$ruolo', NULL)";
+            if (mysqli_query($conn, $sql_insert)) {
+                $successo = "Registrazione fatta! Ora puoi andare al login.";
+            } else {
+                $errore = "Errore nell'inserimento: " . mysqli_error($conn);
+            }
         }
     }
 }
@@ -41,10 +47,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>BiblioTech - Signup</title>
-    <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="static/css/style.css">
-</head>
 </head>
 <body>
     <div class="logo-container">
@@ -64,10 +68,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="text" name="nome" placeholder="Nome" class="form-control" required maxlength="20">
                 <input type="email" name="email" placeholder="Email" class="form-control" required maxlength="50">
                 <input type="password" name="password" placeholder="Password" class="form-control" required>
-                <select name="ruolo" class="form-select">
+                <select name="ruolo" class="form-select mb-3">
                     <option value="STUDENTE">Studente</option>
                     <option value="BIBLIOTECARIO">Bibliotecario</option>
                 </select>
+                
+                <input type="text" name="codice_bibliotecario" placeholder="Codice Bibliotecario (solo per staff)" class="form-control mb-3">
+                
                 <button type="submit" class="btn-custom w-100">REGISTRATI</button>
             </form>
             <p class="mt-3">Sei già registrato? <a href="login.php">Accedi</a></p>

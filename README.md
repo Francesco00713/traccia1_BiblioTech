@@ -27,3 +27,6 @@ BiblioTech è una piattaforma web sviluppata in PHP per la gestione dei prestiti
     2 - 1234
     3 - 12345
     4 - 123456
+
+    CODICE BIBLIOTECARIO (per la registrazione di un nuovo utente con ruolo bibliotecario)
+    - 123
